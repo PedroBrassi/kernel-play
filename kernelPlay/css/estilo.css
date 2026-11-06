@@ -631,3 +631,7 @@ details.man-grupo > summary:hover h2 { color: var(--texto); }
   .cta { position: static; transform: none; margin-top: 4px; }
   .fb-mascote { width: 56px; }
 }
+
+/* Crédito do desenvolvedor */
+.ab-credito { color: var(--suave); font-size: .85rem; margin-top: 6px; }
+.ab-credito a, .man a[target] { color: var(--marca-claro); }

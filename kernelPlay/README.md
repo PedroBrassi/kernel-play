@@ -114,6 +114,7 @@ Simulações de outros assuntos (como escalonamento) precisam de um simulador pr
 Todas as cores estão nas variáveis do topo do `css/estilo.css` (`--marca`, `--fundo`, `--running`…).
 
 ## Créditos
+- Desenvolvimento do jogo: [Pedro Brassi](https://github.com/PedroBrassi)
 - Trechos de código do xv6 (MIT): https://github.com/mit-pdos/xv6-riscv
 
 ## Teclado

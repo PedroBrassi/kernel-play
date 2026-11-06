@@ -153,6 +153,10 @@
     if (m) m.addEventListener("click", renderMan);
   }
 
+  // Crédito do desenvolvedor (aparece na abertura e no man)
+  const AUTOR = { nome: "Pedro Brassi", link: "https://github.com/PedroBrassi" };
+  const creditoAutor = () => `<a href="${AUTOR.link}" target="_blank" rel="noopener">${AUTOR.nome}</a>`;
+
   // =========================================================
   // Tela 0 — Abertura
   // =========================================================
@@ -174,6 +178,7 @@
           <p class="slogan">Aprenda Sistemas Operacionais jogando.<br>Do hardware ao shell, em trilhas curtas.</p>
           <button class="btn grande" id="iniciar">Iniciar sistema ▸</button>
           <p class="ab-tema">Sistemas Operacionais · ${TRILHAS.length} trilha${TRILHAS.length > 1 ? "s" : ""} disponíve${TRILHAS.length > 1 ? "is" : "l"}</p>
+          <p class="ab-credito">Desenvolvido por ${creditoAutor()}</p>
         </section>
         ${mascote("boas-vindas", "ab-mascote")}
       </main>`;
@@ -1480,10 +1485,12 @@ Call Trace:
         </label>
         <p class="man-recuo man-cont">${abertas} de ${total} páginas liberadas ·
           seções: <b>(1)</b> comandos · <b>(2)</b> chamadas de sistema · <b>(3)</b> biblioteca · <b>(7)</b> conceitos ·
-          <b>(8)</b> administração · <b>(kernel)</b> funções do kernel do xv6 · <b>(xv6)</b> recursos do xv6</p>
+          <b>(8)</b> administração · <b>(kernel)</b> funções do kernel do xv6 · <b>(xv6)</b> recursos do xv6 · <b>(win)</b> Windows · <b>(java)</b> Java</p>
         <nav class="man-abas" role="tablist" aria-label="Trilhas do manual">${abas}</nav>
         <div id="man-grupos">${paineis.map(p => p.html).join("")}</div>
         <p class="man-vazio man-recuo" id="man-vazio" hidden>Nenhuma página encontrada para essa palavra.</p>
+        <h1>AUTOR</h1>
+        <p class="man-recuo">Jogo desenvolvido por ${creditoAutor()}. Trechos de código do xv6 © MIT PDOS (licença MIT).</p>
         <div class="man-rodape">
           <span>Manual page kernelplay(7) · aperte <kbd>q</kbd> para sair</span>
           <button class="btn" id="man-sair">Voltar à trilha</button>
