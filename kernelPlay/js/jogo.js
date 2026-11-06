@@ -1429,20 +1429,43 @@ Call Trace:
     topo();
     let total = 0, abertas = 0;
     const vistos = new Set();
-    const grupos = TRILHAS.map(t => {
+    const comMan = TRILHAS.map((t, ti) => ({ t, ti })).filter(x => x.t.fases.some(f => f.man && f.man.length));
+    // Abre na aba da trilha atual (ou na primeira que tiver páginas)
+    const abaInicial = comMan.some(x => x.ti === trilhaIdx) ? trilhaIdx : (comMan[0] ? comMan[0].ti : 0);
+
+    const paineis = comMan.map(({ t, ti }) => {
+      let abertasT = 0, totalT = 0;
+      const liberadas = t.fases.filter(f => f.man && f.man.length && manLiberada(f));
+      // Etapa que já vem aberta: a primeira na apresentação; senão, a última liberada
+      const abrirId = liberadas.length ? (APRESENTACAO ? liberadas[0].id : liberadas[liberadas.length - 1].id) : null;
       const blocos = t.fases.map((f, i) => {
         if (!f.man || !f.man.length) return "";
-        total += f.man.length;
-        const titulo = `<h2><span>${f.etapa || "ETAPA " + (i + 1)}</span> ${f.titulo}</h2>`;
+        const n = f.man.length;
+        totalT += n;
+        const rotulo = `<span>${f.etapa || "ETAPA " + (i + 1)}</span> ${f.titulo}`;
+        const qtd = `${n} página${n > 1 ? "s" : ""}`;
         if (!manLiberada(f)) {
-          return `<section class="man-grupo bloq">${titulo}
-            <p class="man-bloq">🔒 ${f.man.length} página${f.man.length > 1 ? "s" : ""}. Conclua a etapa ${i + 1} da Trilha ${t.numero} para liberar.</p></section>`;
+          return `<section class="man-grupo bloq"><h2>${rotulo} <small>🔒 ${qtd}</small></h2>
+            <p class="man-bloq">Conclua a etapa ${f.etapa || i + 1} da Trilha ${t.numero} para liberar.</p></section>`;
         }
-        abertas += f.man.length;
-        return `<section class="man-grupo">${titulo}${f.man.map(m => paginaMan(m, vistos)).join("")}</section>`;
+        abertasT += n;
+        const indice = f.man.map(m => `<a href="#" data-veja="${esc(nomePagina(m))}">${esc(nomePagina(m))}</a>`).join(" · ");
+        return `<details class="man-grupo" ${f.id === abrirId ? "open" : ""}>
+            <summary><h2>${rotulo} <small>${qtd}</small></h2></summary>
+            <p class="man-indice">${indice}</p>
+            ${f.man.map(m => paginaMan(m, vistos)).join("")}
+          </details>`;
       }).join("");
-      return blocos ? `<div class="man-trilha" data-trilha><h1 class="man-trilha-tit">TRILHA ${t.numero} — ${t.titulo.toUpperCase()}</h1>${blocos}</div>` : "";
-    }).join("");
+      total += totalT; abertas += abertasT;
+      return { ti, t, abertasT, totalT,
+        html: `<div class="man-trilha" data-t="${ti}" role="tabpanel" ${ti === abaInicial ? "" : "hidden"}>
+          <h1 class="man-trilha-tit">TRILHA ${t.numero} — ${t.titulo.toUpperCase()}</h1>${blocos}</div>` };
+    });
+
+    const abas = paineis.map(p => `
+      <button class="man-aba ${p.ti === abaInicial ? "ativa" : ""}" role="tab" data-aba="${p.ti}" aria-selected="${p.ti === abaInicial}">
+        Trilha ${p.t.numero}<small>${p.abertasT}/${p.totalT}</small>
+      </button>`).join("");
 
     app.innerHTML = `
       ${hud()}
@@ -1453,12 +1476,13 @@ Call Trace:
         <h1>SINOPSE</h1>
         <label class="man-busca man-recuo">
           <span>$ man -k</span>
-          <input id="man-busca" type="search" placeholder="palavra-chave (ex.: zumbi, fork, ps)" autocomplete="off" spellcheck="false">
+          <input id="man-busca" type="search" placeholder="palavra-chave em todas as trilhas (ex.: zumbi, fork, i-node)" autocomplete="off" spellcheck="false">
         </label>
         <p class="man-recuo man-cont">${abertas} de ${total} páginas liberadas ·
-          seções: <b>(1)</b> comandos · <b>(2)</b> chamadas de sistema · <b>(7)</b> conceitos ·
-          <b>(kernel)</b> funções do kernel do xv6 · <b>(xv6)</b> recursos do xv6</p>
-        <div id="man-grupos">${grupos}</div>
+          seções: <b>(1)</b> comandos · <b>(2)</b> chamadas de sistema · <b>(3)</b> biblioteca · <b>(7)</b> conceitos ·
+          <b>(8)</b> administração · <b>(kernel)</b> funções do kernel do xv6 · <b>(xv6)</b> recursos do xv6</p>
+        <nav class="man-abas" role="tablist" aria-label="Trilhas do manual">${abas}</nav>
+        <div id="man-grupos">${paineis.map(p => p.html).join("")}</div>
         <p class="man-vazio man-recuo" id="man-vazio" hidden>Nenhuma página encontrada para essa palavra.</p>
         <div class="man-rodape">
           <span>Manual page kernelplay(7) · aperte <kbd>q</kbd> para sair</span>
@@ -1467,11 +1491,32 @@ Call Trace:
       </main>`;
     ligarHud();
 
+    let aba = abaInicial;
+    const mostrarAba = (ti) => {
+      aba = ti;
+      app.querySelectorAll(".man-aba").forEach(b => {
+        const sel = Number(b.dataset.aba) === ti;
+        b.classList.toggle("ativa", sel);
+        b.setAttribute("aria-selected", sel);
+      });
+      app.querySelectorAll(".man-trilha").forEach(p => (p.hidden = Number(p.dataset.t) !== ti));
+    };
+    app.querySelectorAll(".man-aba").forEach(b => b.addEventListener("click", () => {
+      if (busca.value) { busca.value = ""; aplicarBusca(); }
+      mostrarAba(Number(b.dataset.aba));
+    }));
+
+    // Busca: procura em todas as trilhas; os grupos com resultado abrem e, ao limpar, voltam como estavam
     const busca = $("#man-busca");
-    busca.addEventListener("input", () => {
+    const aplicarBusca = () => {
       const q = semAcento(busca.value.trim());
+      const main = $(".man");
+      const entrando = !!q && !main.classList.contains("buscando");
+      const saindo = !q && main.classList.contains("buscando");
+      main.classList.toggle("buscando", !!q);
       let achou = 0;
       app.querySelectorAll(".man-grupo").forEach(g => {
+        if (entrando && g.tagName === "DETAILS") g.dataset.estava = g.open ? "1" : "";
         if (g.classList.contains("bloq")) { g.hidden = !!q; return; }
         let noGrupo = 0;
         g.querySelectorAll(".man-pag").forEach(p => {
@@ -1480,17 +1525,23 @@ Call Trace:
           if (ok) noGrupo++;
         });
         g.hidden = noGrupo === 0;
+        if (q) g.open = noGrupo > 0;
+        if (saindo) g.open = g.dataset.estava === "1";
         achou += noGrupo;
       });
       app.querySelectorAll(".man-trilha").forEach(tr => {
-        tr.hidden = !!q && !Array.from(tr.querySelectorAll(".man-grupo")).some(g => !g.hidden);
+        tr.hidden = q
+          ? !Array.from(tr.querySelectorAll(".man-grupo")).some(g => !g.hidden)
+          : Number(tr.dataset.t) !== aba;
       });
-      $("#man-vazio").hidden = achou > 0;
-    });
+      $("#man-vazio").hidden = !q || achou > 0;
+    };
+    busca.addEventListener("input", aplicarBusca);
     busca.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { busca.value = ""; busca.dispatchEvent(new Event("input")); busca.blur(); }
+      if (e.key === "Escape") { busca.value = ""; aplicarBusca(); busca.blur(); }
     });
 
+    // "Veja também" e o índice: troca de aba, abre a etapa e rola até a página
     app.querySelectorAll("[data-veja]").forEach(a => a.addEventListener("click", (e) => {
       e.preventDefault();
       const alvo = document.getElementById(idPagina(a.dataset.veja));
@@ -1499,7 +1550,9 @@ Call Trace:
         a.title = "Página ainda bloqueada: conclua a etapa correspondente.";
         return;
       }
-      if (busca.value) { busca.value = ""; busca.dispatchEvent(new Event("input")); }
+      if (busca.value) { busca.value = ""; aplicarBusca(); }
+      mostrarAba(Number(alvo.closest(".man-trilha").dataset.t));
+      alvo.closest("details").open = true;
       alvo.scrollIntoView({ behavior: "smooth", block: "center" });
       alvo.classList.remove("piscar");
       void alvo.offsetWidth;

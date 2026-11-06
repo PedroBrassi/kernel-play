@@ -450,6 +450,25 @@ kbd {
 .man-cont { color: var(--suave); font-size: .8rem; line-height: 1.7; }
 .man-cont b { color: var(--texto); }
 .man-grupo { margin: 0 0 8px 28px; }
+.man-abas { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 4px 28px; border-bottom: 1px solid var(--borda); }
+.man-aba {
+  font: inherit; font-size: .85rem; color: var(--suave); background: transparent; border: 1px solid transparent;
+  border-bottom: 0; border-radius: 8px 8px 0 0; padding: 7px 12px; margin-bottom: -1px; cursor: pointer;
+}
+.man-aba small { margin-left: 6px; font-size: .72rem; opacity: .8; }
+.man-aba:hover { color: var(--texto); }
+.man-aba.ativa { color: var(--ambar); background: var(--painel); border-color: var(--borda); }
+.man.buscando .man-abas { opacity: .45; }
+details.man-grupo > summary { list-style: none; cursor: pointer; }
+details.man-grupo > summary::-webkit-details-marker { display: none; }
+details.man-grupo > summary h2 { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+details.man-grupo > summary h2::before { content: "▸"; color: var(--suave); width: 12px; transition: transform .15s; }
+details.man-grupo[open] > summary h2::before { transform: rotate(90deg); }
+details.man-grupo > summary:hover h2 { color: var(--texto); }
+.man-grupo h2 small { color: var(--suave); font-weight: 400; font-size: .75rem; }
+.man-indice { font-size: .78rem; line-height: 1.8; margin: -2px 0 14px 18px; color: var(--suave); }
+.man-indice a { color: var(--ready); white-space: nowrap; }
+.man.buscando .man-indice { display: none; }
 .man-grupo h2 { font-size: .95rem; margin: 22px 0 8px; color: var(--marca-claro); }
 .man-grupo h2 span { color: #0b1220; background: var(--marca-claro); border-radius: 5px; padding: 1px 7px; margin-right: 6px; font-size: .75rem; }
 .man-grupo.bloq h2 { color: var(--unused); }
