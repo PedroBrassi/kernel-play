@@ -40,10 +40,10 @@ As imagens originais e a proposta visual ficam em `../design/`, fora do jogo.
 8. **man**: manual no estilo do Linux, aberto pelo botão `man` no topo. Reúne as páginas de todas as trilhas; cada etapa concluída libera as páginas dela (conceitos, comandos e chamadas de sistema), com busca por palavra-chave (`man -k`) e links "VEJA TAMBÉM" entre as páginas. A tecla `q` sai do manual.
 
 ## Conteúdo
-- **Trilha 1 · Introdução aos SOs** — `../Trilhas/Trilha_1_Introducao.md` (Aulas 1 a 3).
-- **Trilha 2 · Gerenciamento de Processos** — `../Trilhas/Trilha_2_Gerenciamento_de_Processos.md` (Aulas 4 a 11). A fase 2.1 foi dividida em três etapas (processo e PCB; estados; criação e término) para as lições não ficarem longas demais.
-- **Trilha 3 · Gerenciamento de Memória** — `../Trilhas/Trilha_3_Gerenciamento_de_Memoria.md` (Aulas 12 a 15): MMU, paginação, uso da memória, alocação, paginação em disco e substituição de páginas (FIFO, LRU e ótimo como simulação).
-- **Trilha 4 · Gerenciamento de Arquivos** — `../Trilhas/Trilha_4_Gerenciamento_de_Arquivos.md` (Aulas 16 a 18 e Diretórios): arquivos, descritores, sistemas de arquivos, alocação de arquivos (FAT, i-nodes, extensões) e diretórios e atalhos.
+- **Trilha 1 · Introdução aos SOs** — `../docs/trilhas/Trilha_1_Introducao.md` (Aulas 1 a 3).
+- **Trilha 2 · Gerenciamento de Processos** — `../docs/trilhas/Trilha_2_Gerenciamento_de_Processos.md` (Aulas 4 a 11). A fase 2.1 foi dividida em três etapas (processo e PCB; estados; criação e término) para as lições não ficarem longas demais.
+- **Trilha 3 · Gerenciamento de Memória** — `../docs/trilhas/Trilha_3_Gerenciamento_de_Memoria.md` (Aulas 12 a 15): MMU, paginação, uso da memória, alocação, paginação em disco e substituição de páginas (FIFO, LRU e ótimo como simulação).
+- **Trilha 4 · Gerenciamento de Arquivos** — `../docs/trilhas/Trilha_4_Gerenciamento_de_Arquivos.md` (Aulas 16 a 18 e Diretórios): arquivos, descritores, sistemas de arquivos, alocação de arquivos (FAT, i-nodes, extensões) e diretórios e atalhos.
 - **Aulas de laboratório**: desafios marcados com 🧪 (LAB 01 a LAB 04 · xv6) usam os comandos, códigos e resultados das aulas práticas: `ps`, `pstree`, `fork`, threads, os programas de escalonamento e sincronização em C, os experimentos em Java do Lab 03 e os exercícios do xv6.
 - **Estados de processo**: o jogo usa os nomes da aula (Novo, Pronto, Executando, Bloqueado, Zumbi, Finalizado) e mostra ao lado o nome do xv6 (RUNNABLE, RUNNING, SLEEPING, ZOMBIE, UNUSED).
 - **Trechos do xv6**: seguem o xv6-labs-2024, a versão usada no laboratório.
@@ -72,7 +72,7 @@ As explicações mostram a conta completa (por exemplo, o diagrama de Gantt e a 
 Para criar um roteiro novo, acrescente um objeto em `roteiros` no `js/laboratorio.js` (o formato está comentado no topo do arquivo). Para um treino novo, escreva uma função que devolva um desafio `multipla` ou `substituicao` e registre-a em `treinos`.
 
 ## Modo apresentação
-Abra o jogo com `?apresentacao` no fim do endereço, por exemplo `kernelPlay/index.html?apresentacao` ou `https://<usuario>.github.io/projeto-s.o/kernelPlay/?apresentacao`.
+Abra o jogo com `?apresentacao` no fim do endereço, por exemplo `kernelPlay/index.html?apresentacao` ou `https://pedrobrassi.github.io/kernel-play/kernelPlay/?apresentacao`.
 - Todas as etapas ficam liberadas.
 - Dentro da lição aparece a barra **Ir para:**, que pula direto para qualquer desafio (C = conceito, Q = questão, O = ordenar, A = associar, S = simulação, T = terminal, R = roteiro) ou para os cartões do xv6 e do Linux.
 - A estabilidade nunca zera sozinha (para em 20%). Para mostrar o kernel panic, use o link **Mostrar a tela de kernel panic** na trilha.
@@ -103,7 +103,7 @@ Abra o jogo com `?apresentacao` no fim do endereço, por exemplo `kernelPlay/ind
 Cada etapa também tem `etapa` (rótulo curto), `xv6` e `linux` (os cartões do fim da etapa) e `man` (as páginas do manual que a etapa libera). O formato completo está comentado no topo do `js/trilhas.js`.
 
 ## Adicionar uma trilha
-1. Escreva o conteúdo em `../Trilhas/` (como o `Trilha_1_Introducao.md`).
+1. Escreva o conteúdo em `../docs/trilhas/` (como o `Trilha_1_Introducao.md`).
 2. Crie `js/trilhas/trilha-N-nome.js` começando com `TRILHAS.push({ id, numero, titulo, subtitulo, fases: [...] })`. Use como modelo as trilhas que já existem; os `id` das etapas precisam ser únicos entre todas as trilhas.
 3. Acrescente `<script src="js/trilhas/trilha-N-nome.js"></script>` no `index.html`, depois do `trilhas.js`.
 4. A trilha com o mesmo número em `TRILHAS_PREVISTAS` (em `js/trilhas.js`) deixa de aparecer como `[em breve]` sozinha.
