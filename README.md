@@ -51,13 +51,13 @@ Leia [como contribuir](CONTRIBUTING.md) e registre a divisão em [planejamento](
 
 ## Integrantes — 7
 
-- Pedro Brassi Luccas
-- Aurélio Junior
-- Victor Orlando Avelar
-- Gabriel Alves Domingos
-- Pedro Lima
 - Ana Flávia dos Santos Peixoto
+- Aurélio Junior
+- Gabriel Alves Domingos
 - Guilherme Gouvêa da Silva
+- Pedro Brassi Luccas
+- Pedro Lima
+- Victor Orlando Avelar
 
 ## Créditos
 
