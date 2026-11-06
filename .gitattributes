@@ -1,0 +1,7 @@
+# Quebras de linha padronizadas (LF) entre Windows, WSL e Linux
+* text=auto eol=lf
+
+# Binários
+*.png  binary
+*.jpg  binary
+*.webp binary

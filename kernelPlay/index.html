@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KernelPlay</title>
+  <meta name="description" content="KernelPlay: aprenda Sistemas Operacionais jogando.">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icones/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/icones/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/icones/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <!-- Todo o conteúdo é desenhado pelo js/jogo.js dentro desta div -->
+  <div id="app"></div>
+
+  <!-- Ordem importa: lista de trilhas → cada trilha → simulador → motor do jogo -->
+  <script src="js/trilhas.js"></script>
+  <script src="js/trilhas/trilha-1-introducao.js"></script>
+  <script src="js/trilhas/trilha-2-processos.js"></script>
+  <script src="js/trilhas/trilha-3-memoria.js"></script>
+  <script src="js/trilhas/trilha-4-arquivos.js"></script>
+  <script src="js/simulador.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/laboratorio.js"></script>
+  <script src="js/jogo.js"></script>
+</body>
+</html>
